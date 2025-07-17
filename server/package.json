@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Build a RESTful API for a URL shortening service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "URL",
+    "Shortner",
+    "Node",
+    "js",
+    "Express",
+    "Js",
+    "Mongo",
+    "DB",
+    "React",
+    "js",
+    "MERN",
+    "MERN",
+    "Stack"
+  ],
+  "author": "AbuBakar Sheraz Janjua",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongoose": "^8.16.4"
+  }
+}
