@@ -32,3 +32,42 @@ exports.createUrl = async(req, res) => {
     
 };
 
+
+exports.getUrl = async(req, res) => {
+    const shortCode = req.params.shortCode;
+    try{
+        if(shortCode)
+        {
+            const results = await URL.findOneAndUpdate(
+                {
+                    shortCode
+                },
+                {
+                    $inc:{accessCount : 1}
+                },
+            );
+            console.log(results);
+            
+            if(results){
+            return res.status(200).json({
+                id: results._id,
+                url: results.url,
+                shortCode: results.shortCode,
+                createdAt: results.createdAt.toISOString(),
+                updatedAt: results.createdAt.toISOString()                 
+            });
+            }else{
+                return res.status(404).json({error : "Url not found"});
+            }
+    
+        }else{
+            res.status(400).json({error: "Valide shortCode is required"})
+        }
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error : "Internal Server Error"});
+    }
+
+};
+
+
