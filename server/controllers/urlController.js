@@ -70,7 +70,7 @@ exports.getUrl = async(req, res) => {
 
 };
 
-exports.updateUrl = async(req,res) => {
+exports.updateUrl = async(req, res) => {
     const shortCode = req.params.shortCode;
     const url = req.body.url;
     if(!url || !shortCode || typeof url !== 'string' || typeof shortCode !== 'string'){
@@ -95,6 +95,26 @@ exports.updateUrl = async(req,res) => {
             createdAt: results.createdAt.toISOString(),
             updatedAt: results.createdAt.toISOString()                             
         })
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error : "Internal Server Error"});
+    }
+};
+
+exports.deleteUrl = async(req, res) => {
+    const shortCode = req.params.shortCode;
+    if(!shortCode || typeof shortCode !== 'string'){
+        return res.status(400).json({error : 'Valid short URL is required'});
+    }
+    try{
+        const results = await URL.findOneAndDelete({shortCode});
+        if(!results)
+        {
+            return res.status(404).json({error : "URL was not found."});
+        }
+
+        return res.sendStatus(204); 
+
     }catch(error){
         console.error(error);
         res.status(500).json({error : "Internal Server Error"});
