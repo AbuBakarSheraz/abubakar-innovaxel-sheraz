@@ -61,13 +61,44 @@ exports.getUrl = async(req, res) => {
             }
     
         }else{
-            res.status(400).json({error: "Valide shortCode is required"})
+            res.status(400).json({error: "Valid short URL is required"})
         }
     }catch(error){
         console.error(error);
         res.status(500).json({error : "Internal Server Error"});
     }
 
+};
+
+exports.updateUrl = async(req,res) => {
+    const shortCode = req.params.shortCode;
+    const url = req.body.url;
+    if(!url || !shortCode || typeof url !== 'string' || typeof shortCode !== 'string'){
+        return res.status(400).json({error : 'Valid short URL or Original URL is required'});
+    }
+
+    try{
+        const results = await URL.findOneAndUpdate(
+            {shortCode},
+            {
+                url: url,
+                updatedAt: new Date(),
+            },
+        );
+        if(!results){
+            return res.status(404).json({error : 'URL not Found'});
+        }
+        return res.status(200).json({
+            id: results._id,
+            url: results.url,
+            shortCode: results.shortCode,
+            createdAt: results.createdAt.toISOString(),
+            updatedAt: results.createdAt.toISOString()                             
+        })
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error : "Internal Server Error"});
+    }
 };
 
 
