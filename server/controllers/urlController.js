@@ -23,7 +23,7 @@ exports.createUrl = async(req, res) => {
         url: newUrl.url,
         shortCode: newUrl.shortCode,
         createdAt: newUrl.createdAt.toISOString(),
-        updatedAt: newUrl.createdAt.toISOString()        
+        updatedAt: newUrl.updatedAt.toISOString()        
     });
     }catch(error){
         console.error(error);
@@ -54,7 +54,7 @@ exports.getUrl = async(req, res) => {
                 url: results.url,
                 shortCode: results.shortCode,
                 createdAt: results.createdAt.toISOString(),
-                updatedAt: results.createdAt.toISOString()                 
+                updatedAt: results.updatedAt.toISOString()                 
             });
             }else{
                 return res.status(404).json({error : "Url not found"});
@@ -93,7 +93,7 @@ exports.updateUrl = async(req, res) => {
             url: results.url,
             shortCode: results.shortCode,
             createdAt: results.createdAt.toISOString(),
-            updatedAt: results.createdAt.toISOString()                             
+            updatedAt: new Date().toISOString()                             
         })
     }catch(error){
         console.error(error);
@@ -120,5 +120,34 @@ exports.deleteUrl = async(req, res) => {
         res.status(500).json({error : "Internal Server Error"});
     }
 };
+
+exports.statsOfUrl = async(req, res) => {
+    const shortCode = req.params.shortCode;
+    if(!shortCode || typeof shortCode !== 'string')
+    {
+        return res.status(400).json({error : "Invalid type or URL is not provided"});
+    }
+
+    try{
+        const results = await URL.findOne({shortCode});
+        if(!results)
+        {
+            return res.status(404).json({error : "URl was not found"});
+        }
+
+        return res.status(200).json({
+            id: results._id,
+            url: results.url,
+            shortCode: results.shortCode,
+            createdAt: results.createdAt,
+            updatedAt: results.updatedAt,
+            accessCount: results.accessCount
+        });
+    }catch(error){
+        console.error(error);
+        res.status(500).json({error : "Internal Server Error"});
+    }
+    ;
+}
 
 
