@@ -20,6 +20,9 @@ const urlSchema = new mongoose.Schema(
     {
         timestamps: true
     },
+    {
+        versionKey: false // disables __v
+}  
 );
 
 module.exports = mongoose.model('Url', urlSchema);

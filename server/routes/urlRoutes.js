@@ -4,9 +4,9 @@ const urlController = require('../controllers/urlController')
 
 
 router.post('/shorten', urlController.createUrl);
-router.get('/shorten/:shortcode', urlController.getUrl);
-router.put('/editUrl', urlController.editUrl);
-router.delete('/deleteUrl', urlController.deleteUrl);
-router.stats('/stats', urlController.statsOfUrl);
+router.get('/shorten/:shortCode', urlController.getUrl);
+router.put('/shorten/:shortCode', urlController.updateUrl);
+router.delete('/shorten/:shortCode', urlController.deleteUrl);
+router.get('/stats/:shortCode', urlController.statsOfUrl);
 
 module.exports = router;
